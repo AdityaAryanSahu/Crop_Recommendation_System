@@ -164,7 +164,7 @@ def plot_accuracy(history):
 
 if __name__ == "__main__":
     print("Started...")
-    epochs = 45
+    epochs = 43
     batch_size = 32
     lr = 0.0005
     drop = 0.2

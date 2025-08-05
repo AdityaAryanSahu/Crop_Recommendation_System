@@ -5,10 +5,15 @@ import torch
 from torchvision import transforms
 from PIL import Image
 import torch.nn as nn
+from meteostat import Point, Monthly, Daily, Stations
+from datetime import datetime
+import requests
 
-model=joblib.load(r'C:\Users\Lenovo\Downloads\voting_clf.pkl')
-mms=joblib.load(r'C:\Users\Lenovo\Downloads\sc.pkl')
-selector=joblib.load(r'C:\Users\Lenovo\Downloads\selector.pkl')
+model=joblib.load(r"D:\Crop_rec_system\voting_clf.pkl")
+mms=joblib.load(r"D:\Crop_rec_system\sc.pkl")
+selector=joblib.load(r"D:\Crop_rec_system\selector.pkl")
+encoder=joblib.load(r'D:\Crop_rec_system\label_encoder.pkl')
+
 
 class SoilCNN(nn.Module):
     def __init__(self, num_classes=5, num_dense=64, dropout=0.2):
@@ -91,7 +96,10 @@ def getData(N, P, K, temperature, humidity, ph, rainfall ):
     df_scaled_df = pd.DataFrame(df_scaled, columns=df.columns)
     df_selected=selector.transform(df_scaled_df)
     y_pred=model.predict(df_selected)
-    return y_pred
+    print("[INFO] y_pred: ",y_pred)
+    predicted_crop = encoder.inverse_transform([y_pred[0]])[0]
+    print("[INFO] Predicted crop:", predicted_crop)
+    return predicted_crop
 
 
 def soil_rules():
@@ -122,3 +130,48 @@ def soil_rules():
 }
 
     return soil_crop_map
+
+
+# this gets the historic data from meteostat and return avg rain
+def get_avg_rain(lat, lon):
+    try:
+        #print(f"lat:{lat} lon:{lon}")  # fro debugging
+        station= nearby_stations(lat, lon)
+        location = Point(station['latitude'], station['longitude'])
+        start = datetime(2019, 1, 1)
+        end = datetime.now()
+   
+        data = Monthly(location, start, end).fetch()
+    except Exception as e:
+        print("[ERROR] get_avg_rain func issue")
+        return
+
+    avg_rain = data['prcp'].mean()
+    #print(f"in backend avg rain calc:{avg_rain}")  # fro debugging
+    
+    return avg_rain
+
+# this to get coordinates of a city for meteostat
+def get_coordinates(city_name):
+    try: 
+        url = f"https://nominatim.openstreetmap.org/search?city={city_name}&format=json"
+        response = requests.get(url, headers={'User-Agent': 'crop-recommendation-app'})
+        data = response.json()
+    
+        if data:
+            lat = float(data[0]['lat'])
+            lon = float(data[0]['lon'])
+            return lat, lon
+        else:
+            return None, None
+    except Exception as e:
+        print("[ERROR] error in coordinates")
+   
+# basically if any city is directly not in database, 
+# nearest city/station is taken for smooth operation 
+def nearby_stations(lat, lon):
+    stations = Stations().nearby(lat, lon)
+    station = stations.fetch(1)
+    if station.empty:
+        raise ValueError("No nearby station found")
+    return station.iloc[0]

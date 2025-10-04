@@ -34,15 +34,10 @@ COPY my_app /app/my_app
 # Set Python path so imports work correctly
 ENV PYTHONPATH=/app
 
+
 # Health check (optional but recommended)
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
   CMD python -c "import requests; requests.get('http://localhost:7860/health')" || exit 1
 
 # Run the application
-CMD exec gunicorn my_app.app.main:app \
-    --workers 2 \
-    --worker-class uvicorn.workers.UvicornWorker \
-    --bind 0.0.0.0:$APP_PORT \
-    --timeout 120 \
-    --access-logfile - \
-    --error-logfile -
+CMD ["/bin/bash", "-c", "exec gunicorn --chdir /app/my_app my_app.app.main:app --workers 2 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:$APP_PORT"]

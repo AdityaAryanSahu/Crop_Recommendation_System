@@ -1,0 +1,36 @@
+# requirements.txt for Multi-Modal Agricultural Inference System
+
+# --- CRITICAL: PyTorch CUDA 12.8 Installation ---
+# This URL directs pip to the index for PyTorch wheels compiled for CUDA 12.8.
+--extra-index-url https://download.pytorch.org/whl/cu128 
+
+# Explicitly pin PyTorch components to your working versions:
+torch==2.7.1+cu128 
+torchvision==0.22.1+cu128 
+torchaudio==2.7.1+cu128 
+# Note: torchaudio version is assumed to match torchvision/torch for stability.
+
+# --- FastAPI, Data Handling, and Core Dependencies ---
+fastapi==0.115.12
+gunicorn==23.0.0
+uvicorn[standard]==0.32.1
+python-multipart==0.0.20
+
+# --- Data Handling ---
+pydantic==2.11.3
+sqlmodel==0.0.25
+pandas>=2.0.0,<3.0.0
+numpy>=1.24.0,<2.0.0
+
+# --- ML and Image Processing ---
+Pillow>=10.0.0
+joblib>=1.3.0
+scikit-learn>=1.3.0,<1.6.0
+xgboost>=2.0.0
+
+# --- API and External Services ---
+requests>=2.31.0
+meteostat>=1.6.0
+psycopg2-binary
+# You may also need to explicitly pin SQLAlchemy if SQLModel has issues with the latest version.
+# sqlalchemy

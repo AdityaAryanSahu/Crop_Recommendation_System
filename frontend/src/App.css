@@ -1,0 +1,50 @@
+/* src/App.css */
+/* Defines the main colors and the side-by-side layout for the form/result */
+
+:root {
+    --bg-primary: #121A2F;       /* Deep Indigo/Navy */
+    --bg-secondary: #212B47;     /* Darker Slate Card Background */
+    --accent-vibrant: #7A3F9F;   /* Purple/Magenta Accent */
+    --accent-light: #5B52C3;     /* Mid-Blue Accent */
+    --text-color: #E0E7FF;       /* Off-White Text */
+    --input-bg-light: #f5f5f5;   /* Lighter background for text inputs */
+    --input-text-dark: #121A2F;  /* Dark text inside light inputs */
+    --success-green: #3CB371;    
+    --danger-red: #DC143C;       
+    --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--bg-primary);
+    color: var(--text-color);
+    font-family: var(--font-family);
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+}
+
+.App {
+    display: flex;
+    flex-direction: column; 
+    align-items: center; 
+    padding: 40px 20px;
+}
+
+h1 {
+    font-size: 2.5em;
+    color: var(--accent-light); 
+    border-bottom: 3px solid var(--bg-secondary);
+    padding-bottom: 10px;
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+.main-content-area {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; 
+    gap: 30px; 
+    width: 100%;
+    max-width: 950px; /* Total width of the side-by-side containers */
+}
+/* ... Other global styles ... */

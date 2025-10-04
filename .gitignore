@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+*.sqlite3 # Ignore SQLite database files
+*.db
+.env
+*.csv
+node.exe
+soil_data.pkl.gz
+versions.py
+

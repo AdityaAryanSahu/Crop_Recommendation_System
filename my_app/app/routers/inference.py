@@ -7,6 +7,8 @@ from ..services.pred_services import MultiModal
 from ..dependencies import get_multimodal_service
 from sqlmodel import Session
 from ..database import get_session
+from zoneinfo import ZoneInfo
+from tenacity import RetryError
 
 
 router = APIRouter()
@@ -26,7 +28,7 @@ async def predict_manual(device_id: Optional[str] = Form("MANUAL_001"), city: Op
     
     final_crop, compatibility, alternatives, mssg= service.perform_fusion(crop_prediction, soil_prediction)
     
-    date = datetime.now()
+    date = datetime.now(ZoneInfo('Asia/Kolkata'))
     
     log_entry = InferenceLog(
         device_id=device_id,
@@ -66,13 +68,19 @@ async def predict_auto( device_id: Optional[str] = Form("MANUAL_001"), N: float 
         lat, lon= get_coordinates(city)
     except Exception as e:
         raise HTTPException(status_code=404, detail="coordinates not found")
-    temp, humidity, rain= get_weather_details(lat, lon)
+    try:
+        temp, humidity, rain = get_weather_details(lat, lon) 
+    except RetryError as e:
+        raise HTTPException(
+            status_code=503, 
+            detail=f"External Weather API failed after 3 retries. Please check the city name and try again."
+        )
     
     crop_prediction= service.crop_pred(N, P, K,temp, humidity, ph, rain)
     
     final_crop, compatibility, alternatives, mssg= service.perform_fusion(crop_prediction, soil_prediction)
     
-    date = datetime.now()
+    date = datetime.now(ZoneInfo('Asia/Kolkata'))
     
     log_entry = InferenceLog(
         device_id=device_id,
@@ -98,4 +106,3 @@ async def predict_auto( device_id: Optional[str] = Form("MANUAL_001"), N: float 
     alternatives=alternatives,
     date_time=date,
     mssg=mssg)
-    

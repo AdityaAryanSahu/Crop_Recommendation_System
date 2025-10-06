@@ -12,7 +12,7 @@ import os
 import traceback
 
 # Use relative path or environment variable
-MODEL_BASE_PATH = "my_app/app/ML_models"
+MODEL_BASE_PATH = "/app/my_app/ML_models"
 
 class SoilCNN(nn.Module):
     def __init__(self, num_classes=5, num_dense=64, dropout=0.2):

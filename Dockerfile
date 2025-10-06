@@ -1,4 +1,3 @@
-# Use a GPU-compatible base image with necessary libraries
 FROM nvidia/cuda:11.8.0-runtime-ubuntu22.04
 
 # Set environment variables
@@ -30,9 +29,12 @@ RUN pip install --no-cache-dir -r /app/requirements.txt
 
 # Copy application files
 COPY my_app /app/my_app
+RUN mkdir -p /tmp/meteostat /tmp/cache && \
+    chmod -R 777 /tmp/meteostat /tmp/cache
 
 # Set Python path so imports work correctly
 ENV PYTHONPATH=/app
+ENV METEOSTAT_CACHE_DIR=/tmp/meteostat
 
 
 # Health check (optional but recommended)
@@ -40,4 +42,4 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
   CMD python -c "import requests; requests.get('http://localhost:7860/health')" || exit 1
 
 # Run the application
-CMD exec gunicorn app.main:app --chdir my_app --workers 2 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:$APP_PORT
+CMD exec gunicorn app.main:app --chdir my_app --workers 5 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:$APP_PORT

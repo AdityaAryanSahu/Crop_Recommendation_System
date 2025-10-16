@@ -111,6 +111,8 @@ npm run build
 
 >  **Note**: This project requires high-RAM environment due to large PyTorch models. Production backend deployed on GPU instances.
 
+> **Live Demo**: [https://multi-modal-recommendation-system.onrender.com/](https://multi-modal-recommendation-system.onrender.com/)
+
 ***
 
 ##  API Endpoints

@@ -1,0 +1,156 @@
+/* src/App.css — Global Theme & Layout */
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+:root {
+    --bg-primary: #0D1526;
+    --bg-secondary: #162035;
+    --bg-card: #1A2640;
+    --bg-card-hover: #1F2E4A;
+    --accent-purple: #8B5CF6;
+    --accent-purple-dim: rgba(139, 92, 246, 0.15);
+    --accent-blue: #6366F1;
+    --accent-green: #10B981;
+    --accent-green-dim: rgba(16, 185, 129, 0.12);
+    --accent-red: #F43F5E;
+    --accent-amber: #F59E0B;
+    --text-primary: #F0F4FF;
+    --text-secondary: rgba(224, 231, 255, 0.65);
+    --text-muted: rgba(224, 231, 255, 0.35);
+    --input-bg: #0F1C35;
+    --input-border: rgba(99, 102, 241, 0.2);
+    --input-border-focus: rgba(139, 92, 246, 0.6);
+    --border-subtle: rgba(255, 255, 255, 0.06);
+    --shadow-card: 0 20px 60px rgba(0, 0, 0, 0.5), 0 1px 0 rgba(255,255,255,0.05) inset;
+    --font-display: 'Space Grotesk', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+    --radius-lg: 16px;
+    --radius-md: 10px;
+    --radius-sm: 6px;
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-primary);
+    background-image: 
+        radial-gradient(ellipse at 20% 0%, rgba(99, 102, 241, 0.08) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 100%, rgba(139, 92, 246, 0.06) 0%, transparent 60%);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+}
+
+.App {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 48px 24px 60px;
+    min-height: 100vh;
+}
+
+/* ── Header ─────────────────────────────────────── */
+.App-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.App-header h1 {
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -0.5px;
+    margin: 0 0 10px;
+    padding: 0;
+    border: none;
+    background: linear-gradient(135deg, #a78bfa 0%, #818cf8 50%, #6ee7b7 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.subtitle {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    font-weight: 400;
+    margin: 0;
+    letter-spacing: 0.2px;
+}
+
+/* ── Main Layout ─────────────────────────────────── */
+.main-content-area {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 24px;
+    width: 100%;
+    max-width: 960px;
+}
+
+/* Form centered at fixed width when no result */
+.main-content-area .form-card {
+    width: 480px;
+    flex-shrink: 0;
+    transition: width 0.4s ease;
+}
+
+/* Result panel slides in from right */
+.main-content-area .result-box {
+    width: 400px;
+    flex-shrink: 0;
+    animation: slideInRight 0.35s ease;
+}
+
+@keyframes slideInRight {
+    from { opacity: 0; transform: translateX(20px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+
+@media (max-width: 960px) {
+    .main-content-area {
+        flex-direction: column;
+        align-items: center;
+    }
+    .main-content-area .form-card,
+    .main-content-area .result-box {
+        width: 100%;
+        max-width: 520px;
+    }
+}
+
+/* ── Section headings inside cards ──────────────── */
+h2 {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 20px;
+    padding: 0;
+    border: none;
+}
+
+h3 {
+    font-family: var(--font-display);
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: var(--accent-purple);
+    margin: 24px 0 14px;
+    padding: 0 0 8px;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+/* ── Footer ─────────────────────────────────────── */
+.App-footer {
+    margin-top: 48px;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    text-align: center;
+}

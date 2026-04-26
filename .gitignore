@@ -1,0 +1,15 @@
+__pycache__/
+*.pyc
+*.sqlite3 # Ignore SQLite database files
+*.db
+.env
+*.csv
+node.exe
+soil_data.pkl.gz
+versions.py
+*.onnx
+crop_recommender.pkl
+new_dataset.py
+onnx_conversions.py
+iot_deployment/
+my_app/ML_modules/*.png

@@ -34,5 +34,6 @@ meteostat>=1.6.0
 psycopg2-binary
 requests-cache
 tenacity
+optuna
 # You may also need to explicitly pin SQLAlchemy if SQLModel has issues with the latest version.
 # sqlalchemy

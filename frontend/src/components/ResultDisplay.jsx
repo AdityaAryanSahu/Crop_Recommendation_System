@@ -6,11 +6,12 @@ import './Inference.css';
 // Maps crop names to emojis for a friendlier display
 
 const ResultDisplay = ({ result }) => {
-    const finalCrop   = result?.crop_pred || 'N/A';
+    const alternatives = result?.alternatives || [];
+    const finalCrop   = result?.crop_pred || alternatives[0];
     const soilPred    = result?.soil_pred || 'N/A';
     const rawPred     = result?.raw_tabular_prediction || 'N/A';
     const isCompatible = result?.compatibility ?? false;
-    const alternatives = result?.alternatives || [];
+    
     const message     = result?.mssg || 'Successfully retrieved results.';
     const dateTime    = result?.date_time
         ? new Date(result.date_time).toLocaleString()

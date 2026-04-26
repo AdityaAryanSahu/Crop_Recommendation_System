@@ -233,17 +233,16 @@ class MultiModal:
         meta_prob = self.xg_meta_model.predict_proba(meta_input)
         
         max_prob = np.max(meta_prob)
-        if max_prob > 0.45:
+        if max_prob > 0.35:
             is_compatible = True
         else:
             is_compatible = False
-        
+        print(f"xg probs: {max_prob}")
         message = ""
         top_3_crops = []
         final_crop = ""
         
         if is_compatible:
-            print(f"xg probs: {max_prob}")
             final_crop_idx = self.xg_meta_model.predict(meta_input)
             final_crop = self.encoder.inverse_transform([final_crop_idx])[0]
             message = f"Fusion Success: Raw crop '{final_crop.capitalize()}' is compatible with predicted {predicted_soil.capitalize()} soil."

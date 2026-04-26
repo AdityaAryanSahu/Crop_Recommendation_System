@@ -240,6 +240,7 @@ class MultiModal:
         
         message = ""
         top_3_crops = []
+        final_crop = ""
         
         if is_compatible:
             print(f"xg probs: {max_prob}")

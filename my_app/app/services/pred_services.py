@@ -259,7 +259,7 @@ class MultiModal:
                   ann_probs * weights[1] + 
                   rf_probs * weights[2] + 
                   lr_probs * weights[3])
-            top_3_indices = np.argsort(weighted_probs)[-3:][::-1]
+            top_3_indices = np.argsort(weighted_probs[0])[-3:][::-1]
             top_3_crops = self.encoder.inverse_transform(top_3_indices)
             
             message = f"Fusion Fallback: Raw prediction was incompatible. Recommended top compatible crop: {top_3_crops[0]}."
